@@ -1,0 +1,10 @@
+<ul class="list-group" ng-class="{'col-sm-3': packageOpen}">
+	<a class="list-group-item" ui-sref="browser()">Add Package</a>
+	<li class="list-group-item" ng-repeat="package in packages">
+		<a ui-sref="packages.package({name: package.name})">
+			{{package.name}}
+		</a>
+
+	</li>
+</ul>
+<ui-view ng-class="{'col-sm-9': packageOpen}"></ui-view>

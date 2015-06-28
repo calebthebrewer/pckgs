@@ -1,0 +1,32 @@
+<div class="container-fluid browser">
+	<form class="browser-filter" ng-submit="browse()">
+		<input class="form-control" type="text" ng-model="path" ng-change="browse()">
+	</form>
+	<ul class="list-group browser-list" ng-class="{'col-md-6': !!package}">
+		<a class="list-group-item" ng-repeat="file in files" ui-sref="browser({path: [path, file]})">
+			{{file}}
+		</a>
+	</ul>
+	<div ng-if="package" class="col-md-6" json="package">
+		<h2>{{package.name}}</h2>
+		<button type="button"
+				ng-click="addPackage()"
+				class="btn btn-block"
+				ng-class="{'btn-success': added, 'btn-primary': !added}"
+				ng-disabled="added">
+			Add Package
+		</button>
+		<h3>Scripts</h3>
+		<div ng-repeat="script in ['run', 'install', 'postinstall', 'test']"
+			 ng-if="package.scripts[script]"
+			 class="input-group">
+			<input type="text" class="form-control" value="{{package.scripts[script]}}" disabled>
+			<span class="input-group-btn">
+				<button ng-click="runScript(script)" class="btn btn-default" type="button">Run '{{script}}'</button>
+			</span>
+		</div>
+		<div pretty-json="package">
+			{{package}}
+		</div>
+	</div>
+</div>
