@@ -1,12 +1,16 @@
 angular.module('packages')
 	.controller('packages', [
 		'$scope',
+		'$rootScope',
 		'$state',
 		'packages',
-		function ($scope, $state, packages) {
+		function ($scope, $rootScope, $state, packages) {
 			'use strict';
 
-			$scope.packageOpen = !$state.is($state.current);
+			$scope.packageOpen = !$state.is('packages');
+			$rootScope.$on('$locationChangeSuccess', function() {
+				$scope.packageOpen = !$state.is('packages');
+			});
 
 			packages
 				.paths()

@@ -1,5 +1,5 @@
-angular.module('browser')
-	.controller('browser', [
+angular.module('kaskade')
+	.controller('kaskade', [
 		'$scope',
 		'$state',
 		'pckgs',
@@ -25,14 +25,13 @@ angular.module('browser')
 			}
 
 			$scope.browse = function browse() {
-				$state.go('browser', {path: $scope.path});
+				$state.go('kaskade', {path: $scope.path});
 			};
 
 			$scope.addPackage = function addPackage() {
 				pckgs
 					.post(path.path, {
-						name: path.package.name,
-						path: path.path
+						name: path.package.name
 					})
 					.then(function() {
 						$scope.added = true;

@@ -63,6 +63,10 @@ app.delete('/packages/:path', function(req, res) {
 	res.send();
 });
 
+require('./pckgs')(app);
+require('./files')(app);
+require('./scripts')(app);
+
 app.post('/run', function(req, res) {
 	var path = req.body.path;
 	var script = packages.get(encodeURIComponent(path)).scripts[req.body.script]

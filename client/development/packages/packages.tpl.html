@@ -1,10 +1,10 @@
-<ul class="list-group" ng-class="{'col-sm-3': packageOpen}">
+<ul class="list-group" ng-class="{'col-sm-4': packageOpen}">
 	<a class="list-group-item" ui-sref="browser()">Add Package</a>
-	<li class="list-group-item" ng-repeat="package in packages">
-		<a ui-sref="packages.package({path: package.path})">
-			{{package.name}}
-		</a>
-
-	</li>
+	<a ng-repeat="package in packages"
+	   ui-sref="packages.package({path: package.path})"
+	   ui-sref-active="active"
+	   class="list-group-item">
+		{{package.name}}
+	</a>
 </ul>
-<ui-view ng-class="{'col-sm-9': packageOpen}"></ui-view>
+<ui-view ng-class="{'col-sm-8': packageOpen}"></ui-view>

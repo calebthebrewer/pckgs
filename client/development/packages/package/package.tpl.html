@@ -1,1 +1,23 @@
-<h1>{{::content.name}}</h1>
+<div class="package">
+	<h1>{{::npm.name}}</h1>
+	<h2>Scripts</h2>
+	<div ng-repeat="(script, command) in npm.scripts">
+		<div class="row">
+			<button ng-click="npmScript(script)"
+					role="button"
+					class="btn btn-default col-xs-4">
+				{{::script}}
+			</button>
+			<pre class="col-xs-8">{{::command}}</pre>
+		</div>
+		<div ng-if="output[script]" class="row">
+
+				<ol>
+					<li ng-repeat="out in output[script] track by $index" ng-if="out">
+						{{out}}
+					</li>
+				</ol>
+
+		</div>
+	</div>
+</div>

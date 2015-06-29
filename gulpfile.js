@@ -27,6 +27,10 @@ var jsFiles = [
   ];
 var allJsFiles = jsFiles.concat('server.js');
 
+var vendorJsFiles = [
+  './bower_components/marked/marked.min.js'
+];
+
 gulp.task('watch', function() {
   gulp.watch(sassFiles, ['sass']);
   gulp.watch(jsFiles, ['js']);
@@ -91,7 +95,7 @@ gulp.task('vendor', function() {
     .pipe(concat('vendor.css'))
     .pipe(minifyCss())
     .pipe(gulp.dest(prod + '/vendor'));
-  gulp.src(bower('**/*.js'))
+  gulp.src(vendorJsFiles.concat(bower('**/*.js')))
     .pipe(concat('vendor.js'))
 //     .pipe(uglify())
     .pipe(gulp.dest(prod + '/vendor'));
