@@ -18,9 +18,14 @@ module.exports = function(name, options) {
 		return packages.values();
 	}
 
+	function remove(path) {
+		return packages.removeItem(path);
+	}
+
 	return {
 		add: add,
 		get: get,
-		getPaths: getPaths
+		getAll: getPaths,
+		remove: remove
 	};
 };

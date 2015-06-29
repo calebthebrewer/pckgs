@@ -39,7 +39,7 @@ app.get('/browse', function(req, res) {
 
 	if ( directory.files && directory.files.indexOf('package.json') > -1) {
 		directory.package = fs.readJsonSync(path.join(directory.path, 'package.json'));
-		packages.add(encodeURIComponent(directory.path), directory.package);
+		directory.package.path = reqPath;
 	}
 
 	res.send(directory);
@@ -47,11 +47,20 @@ app.get('/browse', function(req, res) {
 
 app.post('/packages', function(req, res) {
 	packages.add(encodeURIComponent(req.body.path), req.body.package);
-	res.send(packages.getPaths());
+	res.send(packages.getAll());
 });
 
 app.get('/packages', function(req, res) {
-	res.send(packages.getPaths());
+	res.send(packages.getAll());
+});
+
+app.get('/packages/:path', function(req, res) {
+	res.send(packages.get(req.params.path));
+});
+
+app.delete('/packages/:path', function(req, res) {
+	packages.remove(req.params.path);
+	res.send();
 });
 
 app.post('/run', function(req, res) {

@@ -6,11 +6,11 @@ angular.module('packages')
 		function ($scope, $state, packages) {
 			'use strict';
 
-			$scope.packageOpen = true;
+			$scope.packageOpen = !$state.is($state.current);
 
 			packages
 				.paths()
-				.success(function(paths) {
+				.then(function(paths) {
 					$scope.packages = paths;
 				});
 

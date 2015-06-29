@@ -2,12 +2,12 @@
 	<form class="browser-filter" ng-submit="browse()">
 		<input class="form-control" type="text" ng-model="path" ng-change="browse()">
 	</form>
-	<ul class="list-group browser-list" ng-class="{'col-md-6': !!package}">
+	<ul class="list-group browser-list" ng-class="{'col-md-4': !!package}">
 		<a class="list-group-item" ng-repeat="file in files" ui-sref="browser({path: [path, file]})">
 			{{file}}
 		</a>
 	</ul>
-	<div ng-if="package" class="col-md-6" json="package">
+	<div ng-if="package" class="col-md-8" json="package">
 		<h2>{{package.name}}</h2>
 		<button type="button"
 				ng-click="addPackage()"
