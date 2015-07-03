@@ -8,6 +8,8 @@ var spawn = require('child_process').spawn;
 //express server
 var express = require('express');
 var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
 //local storage
 var packages = require('./package-store')('packages');
@@ -65,7 +67,7 @@ app.delete('/packages/:path', function(req, res) {
 
 require('./pckgs')(app);
 require('./files')(app);
-require('./scripts')(app);
+require('./scripts')(app, io);
 
 app.post('/run', function(req, res) {
 	var path = req.body.path;
@@ -74,7 +76,7 @@ app.post('/run', function(req, res) {
 	runningScript;
 });
 
-app.listen(app.get('port'), function () {
+server.listen(app.get('port'), function () {
 	console.log('Doin\' something fun over at :' + app.get('port'));
 });
 

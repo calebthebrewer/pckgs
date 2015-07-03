@@ -2,11 +2,12 @@ angular.module('packages')
 	.controller('package', [
 		'$scope',
 		'scripts',
+		'socketFactory',
 		'pckg',
 		'npm',
 		'bower',
 		'readme',
-		function($scope, scripts, pckg, npm, bower, readme) {
+		function($scope, scripts, socketFactory, pckg, npm, bower, readme) {
 			'use strict';
 
 			$scope.npm = npm;
@@ -21,11 +22,24 @@ angular.module('packages')
 			}
 
 			$scope.npmScript = function npmScript(script) {
-				scripts
-					.run(npm.scripts[script], pckg.path)
-					.then(function(output) {
-						$scope.output[script] = output;
+				var scriptSocket = socketFactory({
+					ioSocket: io.connect('http://localhost:4005')
+				});
+
+				scriptSocket.emit('script', {
+					path: pckg.path,
+					command: npm.scripts[script]
+				});
+
+				$scope.output[script] = [];
+
+				scriptSocket.on('output', function(output) {
+					output.forEach(function(datum) {
+						if (datum) {
+							$scope.output[script].push(datum);
+						}
 					});
+				});
 			};
 		}
 	]);

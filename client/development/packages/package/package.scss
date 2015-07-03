@@ -4,4 +4,12 @@
     margin: 0;
     padding: 6px;
   }
+
+  .output {
+    margin: 0 4px;
+    background-color: #eee;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    max-height: 200px;
+    overflow-y: scroll;
+  }
 }

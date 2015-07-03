@@ -11,13 +11,11 @@
 			<pre class="col-xs-8">{{::command}}</pre>
 		</div>
 		<div ng-if="output[script]" class="row">
-
-				<ol>
-					<li ng-repeat="out in output[script] track by $index" ng-if="out">
-						{{out}}
-					</li>
-				</ol>
-
+			<ol class="output">
+				<li ng-repeat="out in output[script] track by $index">
+					{{out}}
+				</li>
+			</ol>
 		</div>
 	</div>
 </div>

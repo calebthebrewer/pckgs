@@ -28,7 +28,8 @@ var jsFiles = [
 var allJsFiles = jsFiles.concat('server.js');
 
 var vendorJsFiles = [
-  './bower_components/marked/marked.min.js'
+  './bower_components/marked/marked.min.js',
+  './node_modules/socket.io-client/socket.io.js'
 ];
 
 gulp.task('watch', function() {
