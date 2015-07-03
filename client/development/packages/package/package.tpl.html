@@ -1,6 +1,8 @@
 <div class="package">
 	<h1>{{::npm.name}}</h1>
+
 	<h2>Scripts</h2>
+
 	<div ng-repeat="(script, command) in npm.scripts">
 		<div class="row">
 			<button ng-click="npmScript(script)"
@@ -11,11 +13,31 @@
 			<pre class="col-xs-8">{{::command}}</pre>
 		</div>
 		<div ng-if="output[script]" class="row">
-			<ol class="output">
+			<ol class="output" scroll-glue>
 				<li ng-repeat="out in output[script] track by $index">
 					{{out}}
 				</li>
 			</ol>
 		</div>
 	</div>
+	<h2>New Script</h2>
+	<form ng-submit="addScript()" role="form" class="form-inline">
+		<div class="row">
+			<div class="input-group col-xs-4">
+				<label>Label</label>
+				<input ng-model="newScript.label" type="text" class="form-control">
+			</div>
+			<div class="input-group col-xs-8">
+				<label>Command</label>
+				<input ng-model="newScript.command" type="text" class="form-control">
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-group col-xs-12">
+				<button type="submit" class="btn btn-block btn-primary form-control">Add Script</button>
+			</div>
+		</div>
+	</form>
+	<h2>Environment</h2>
+
 </div>

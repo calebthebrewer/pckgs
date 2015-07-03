@@ -28,15 +28,17 @@ module.exports = function(app, io) {
 			child.stdout.setEncoding('utf8');
 
 			child.stdout.on('data', function(data) {
-				socket.emit('output', data.split('\n'));
+				socket.emit(script.channel, data.split('\n'));
 			});
 
 			child.on('close', function() {
+				child.kill();
+				socket.emit('done', script.channel);
 			});
 
 			child.on('error', function(error) {
 				child.kill();
-				socket.send('error', error);
+				socket.emit(script.channel, error);
 			});
 		});
 	});
