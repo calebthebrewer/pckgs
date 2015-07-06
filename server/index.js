@@ -3,16 +3,12 @@
 var bodyParser = require('body-parser');
 var fs = require('fs-extra');
 var path = require('path');
-var spawn = require('child_process').spawn;
 
 //express server
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-
-//local storage
-var packages = require('./package-store')('packages');
 
 app.set('port', process.env.PORT || 4000);
 app.set('client', 'client/production');
@@ -35,11 +31,11 @@ app.get('/browse', function(req, res) {
 			path: fs.realpathSync(reqPath),
 			files: fs.readdirSync(reqPath)
 		};
-	} catch (error){
+	} catch (error) {
 		directory = {};
 	}
 
-	if ( directory.files && directory.files.indexOf('package.json') > -1) {
+	if (directory.files && directory.files.indexOf('package.json') > -1) {
 		directory.package = fs.readJsonSync(path.join(directory.path, 'package.json'));
 		directory.package.path = reqPath;
 	}
@@ -47,34 +43,9 @@ app.get('/browse', function(req, res) {
 	res.send(directory);
 });
 
-app.post('/packages', function(req, res) {
-	packages.add(encodeURIComponent(req.body.path), req.body.package);
-	res.send(packages.getAll());
-});
-
-app.get('/packages', function(req, res) {
-	res.send(packages.getAll());
-});
-
-app.get('/packages/:path', function(req, res) {
-	res.send(packages.get(req.params.path));
-});
-
-app.delete('/packages/:path', function(req, res) {
-	packages.remove(req.params.path);
-	res.send();
-});
-
 require('./pckgs')(app);
 require('./files')(app);
 require('./scripts')(app, io);
-
-app.post('/run', function(req, res) {
-	var path = req.body.path;
-	var script = packages.get(encodeURIComponent(path)).scripts[req.body.script]
-	var runningScript = spawn('cd ' + path + ' && ' + script);
-	runningScript;
-});
 
 server.listen(app.get('port'), function () {
 	console.log('Doin\' something fun over at :' + app.get('port'));

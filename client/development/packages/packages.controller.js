@@ -3,8 +3,8 @@ angular.module('packages')
 		'$scope',
 		'$rootScope',
 		'$state',
-		'packages',
-		function ($scope, $rootScope, $state, packages) {
+		'pckgs',
+		function ($scope, $rootScope, $state, pckgs) {
 			'use strict';
 
 			$scope.packageOpen = !$state.is('packages');
@@ -12,14 +12,14 @@ angular.module('packages')
 				$scope.packageOpen = !$state.is('packages');
 			});
 
-			packages
-				.paths()
+			pckgs
+				.getAll()
 				.then(function(paths) {
 					$scope.packages = paths;
 				});
 
 			$scope.addPackage = function addPackage() {
-				packages.add($scope.newPackage);
+				pckgs.post($scope.newPackage);
 				$scope.newPackage = false;
 			};
 		}

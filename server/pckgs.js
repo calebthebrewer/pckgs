@@ -1,4 +1,6 @@
-var _  = require('lodash');
+'use strict';
+
+var _ = require('lodash');
 var pckgs = require('node-persist');
 
 pckgs.initSync(_.defaults({dir: 'pckgs'}));

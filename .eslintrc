@@ -4,7 +4,8 @@
     "browser": true
   },
   "globals": {
-    "angular": true
+    "angular": true,
+    "io": true
   },
   "rules": {
     "brace-style": [2, "1tbs", {"allowSingleLine": true}],

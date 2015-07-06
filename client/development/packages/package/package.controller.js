@@ -3,12 +3,12 @@ angular.module('packages')
 		'$scope',
 		'scripts',
 		'socketFactory',
-		'packages',
+		'pckgs',
 		'pckg',
 		'npm',
 		'bower',
 		'readme',
-		function($scope, scripts, socketFactory, packages, pckg, npm, bower, readme) {
+		function($scope, scripts, socketFactory, pckgs, pckg, npm, bower, readme) {
 			'use strict';
 
 			$scope.npm = npm;
@@ -53,9 +53,12 @@ angular.module('packages')
 			};
 
 			$scope.addScript = function addScript() {
-				if (!pckg.scripts) pckg.scripts = {};
+				if (!pckg.scripts) {
+					pckg.scripts = {};
+				}
+
 				pckg.scripts[$scope.newScript.label] = $scope.newScript.command;
-				packages.add(pckg.path, pckg);
+				pckgs.add(pckg.path, pckg);
 
 				addPckgScriptsToScope();
 				$scope.newScript = {};

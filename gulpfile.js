@@ -25,11 +25,14 @@ var jsFiles = [
     dev + '/**/*.module.js',
     dev + '/**/*.js'
   ];
-var allJsFiles = jsFiles.concat('server.js');
+var allJsFiles = jsFiles.concat('server/**/*.js');
 
 var vendorJsFiles = [
   './bower_components/marked/marked.min.js',
   './node_modules/socket.io-client/socket.io.js'
+];
+var vendorFontFiles = [
+  './bower_components/bootstrap/fonts/*.*'
 ];
 
 gulp.task('watch', function() {
@@ -100,7 +103,7 @@ gulp.task('vendor', function() {
     .pipe(concat('vendor.js'))
 //     .pipe(uglify())
     .pipe(gulp.dest(prod + '/vendor'));
-  gulp.src(bower('**/fonts/**/*.*'))
+  gulp.src(bower('**/fonts/**/*.*').concat(vendorFontFiles))
     .pipe(gulp.dest(prod + '/fonts'));
 });
 

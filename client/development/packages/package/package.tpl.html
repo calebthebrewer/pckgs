@@ -2,15 +2,19 @@
 	<h1>{{::npm.name}}</h1>
 
 	<h2>Scripts</h2>
-
 	<div ng-repeat="(script, command) in npm.scripts">
 		<div class="row">
 			<button ng-click="npmScript(script)"
 					role="button"
-					class="btn btn-default col-xs-4">
+					class="btn btn-default col-xs-3">
 				{{::script}}
 			</button>
 			<pre class="col-xs-8">{{::command}}</pre>
+			<button ng-click="removeScript(script)"
+					role="button"
+					class="btn btn-danger col-xs-1">
+				<span class="glyphicon glyphicon-remove"></span>
+			</button>
 		</div>
 		<div ng-if="output[script]" class="row">
 			<ol class="output" scroll-glue>
@@ -20,21 +24,20 @@
 			</ol>
 		</div>
 	</div>
-	<h2>New Script</h2>
+
+	<h3>Add Script</h3>
 	<form ng-submit="addScript()" role="form" class="form-inline">
 		<div class="row">
-			<div class="input-group col-xs-4">
-				<label>Label</label>
-				<input ng-model="newScript.label" type="text" class="form-control">
+			<div class="input-group col-xs-3">
+				<input ng-model="newScript.label" type="text" class="form-control" placeholder="label...">
 			</div>
 			<div class="input-group col-xs-8">
-				<label>Command</label>
-				<input ng-model="newScript.command" type="text" class="form-control">
+				<input ng-model="newScript.command" type="text" class="form-control" placeholder="command...">
 			</div>
-		</div>
-		<div class="row">
-			<div class="input-group col-xs-12">
-				<button type="submit" class="btn btn-block btn-primary form-control">Add Script</button>
+			<div class="input-group col-xs-1">
+				<button type="submit" class="btn btn-primary form-control">
+					<span class="glyphicon glyphicon-plus"></span>
+				</button>
 			</div>
 		</div>
 	</form>

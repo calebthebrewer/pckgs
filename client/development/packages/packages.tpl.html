@@ -1,6 +1,7 @@
 <ul class="list-group" ng-class="{'col-sm-4': packageOpen}">
 	<a class="list-group-item" ui-sref="browser()">Add Package</a>
-	<a ng-repeat="package in packages"
+	<input ng-if="packages.length > 5" class="form-control" ng-model="pckgFilter" placeholder="filter...">
+	<a ng-repeat="package in packages | filter:pckgFilter"
 	   ui-sref="packages.package({path: package.path})"
 	   ui-sref-active="active"
 	   class="list-group-item">
