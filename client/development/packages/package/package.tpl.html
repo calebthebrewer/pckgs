@@ -41,6 +41,62 @@
 			</div>
 		</div>
 	</form>
-	<h2>Environment</h2>
+
+	<h2>Environments</h2>
+	<div ng-repeat="(environment, settings) in environments">
+		<div class="row">
+			<div class="col-xs-3">
+				{{::environment}}
+			</div>
+			<div class="col-xs-8">
+				<span ng-repeat="setting in settings" class="environment-setting">{{::setting.key}}={{::setting.value}}</span>
+			</div>
+
+			<button ng-click="removeEnvironment(environment)"
+					role="button"
+					class="btn btn-danger col-xs-1">
+				<span class="glyphicon glyphicon-remove"></span>
+			</button>
+		</div>
+	</div>
+
+	<h3>Add Environment</h3>
+	<form ng-submit="addEnvironment()" role="form" class="form-inline add-environment">
+		<div class="row">
+			<div class="input-group col-xs-3 align-top">
+				<input ng-model="newEnvironment.name" type="text" class="form-control" placeholder="name..." required>
+			</div>
+			<div class="input-group col-xs-8">
+				<div class="container-fluid">
+					<div ng-repeat="setting in newEnvironment.settings" class="row">
+						<div class="input-group col-xs-6">
+							<input ng-model="setting.key"
+								   type="text"
+								   class="form-control"
+								   placeholder="key..." required>
+						</div>
+						<div class="input-group col-xs-6">
+							<input ng-model="setting.value"
+								   type="text" class="form-control"
+								   placeholder="value...">
+						</div>
+
+					</div>
+					<div class="row">
+						<button ng-click="newEnvironment.settings.push({key: '', value:''})"
+								class="btn btn-primary btn-block">
+							Add Setting
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="input-group col-xs-1 align-top">
+				<button type="submit" class="btn btn-primary form-control">
+					<span class="glyphicon glyphicon-plus"></span>
+				</button>
+			</div>
+		</div>
+	</form>
+
 
 </div>

@@ -16,6 +16,7 @@ angular.module('packages')
 			$scope.readme = readme;
 
 			$scope.output = {};
+			resetNewEnvironment();
 
 			// helpers
 			if (!npm.scripts.install) {
@@ -23,6 +24,8 @@ angular.module('packages')
 			}
 
 			addPckgScriptsToScope();
+
+			$scope.environments = pckg.environments || {};
 
 			$scope.npmScript = function npmScript(script) {
 				var scriptSocket = socketFactory({
@@ -58,7 +61,7 @@ angular.module('packages')
 				}
 
 				pckg.scripts[$scope.newScript.label] = $scope.newScript.command;
-				pckgs.add(pckg.path, pckg);
+				pckgs.post(pckg.path, pckg);
 
 				addPckgScriptsToScope();
 				$scope.newScript = {};
@@ -68,6 +71,31 @@ angular.module('packages')
 				for (var script in pckg.scripts) {
 					npm.scripts[script] = pckg.scripts[script];
 				}
+			}
+
+			$scope.addEnvironment = function addEnvironment() {
+				if (!pckg.environments) {
+					pckg.environments = {};
+				}
+
+				pckg.environments[$scope.newEnvironment.name] = $scope.newEnvironment.settings;
+				pckgs.post(pckg.path, pckg);
+
+				resetNewEnvironment();
+			};
+
+			$scope.removeEnvironment = function removeEnvironment(environment) {
+				delete pckg.environments[environment];
+				pckgs.post(pckg.path, pckg);
+			};
+
+			function resetNewEnvironment() {
+				$scope.newEnvironment = {
+					settings: [{
+						key: '',
+						value: ''
+					}]
+				};
 			}
 		}
 	]);
