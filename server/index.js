@@ -44,9 +44,7 @@ app.get('/browse', function(req, res) {
 });
 
 require('./pckgs')(app);
-/*
 require('./teams')(app);
-*/
 require('./files')(app);
 require('./scripts')(app, io);
 

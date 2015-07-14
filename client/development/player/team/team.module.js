@@ -1,1 +1,3 @@
-angular.module('team', []);
+angular.module('team', [
+	'nya.bootstrap.select'
+]);

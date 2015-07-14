@@ -15,7 +15,7 @@
 			</div>
 		</div>
 	</form>
-	<ul class="list-group" ng-class="{'col-sm-4': teamOpen}">
+	<ul class="list-group" ng-class="{'col-sm-2': teamOpen}">
 		<input ng-if="teams > 5" class="form-control" ng-model="teamFilter" placeholder="filter...">
 		<a ng-repeat="team in teams | filter:teamFilter"
 		   ui-sref="player.team({team: team.name})"
@@ -24,6 +24,6 @@
 			{{team.name}}
 		</a>
 	</ul>
-	<ui-view ng-class="{'col-sm-8': teamOpen}"></ui-view>
+	<ui-view ng-class="{'col-sm-10': teamOpen}"></ui-view>
 </div>
 

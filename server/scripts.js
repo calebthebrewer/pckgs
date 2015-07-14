@@ -20,7 +20,15 @@ module.exports = function(app, io) {
 };
 
 function startScript(io, script) {
-	var child = spawn('cd ' + script.path + ' && ' + script.command);
+	var env = {};
+	script.environment.forEach(function(setting) {
+		env[setting.key] = setting.value;
+	});
+
+	var child = spawn(script.command, [], {
+		cwd: script.path,
+		env: env
+	});
 
 	child.stdout.setEncoding('utf8');
 

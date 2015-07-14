@@ -14,6 +14,7 @@ var uglify = require('gulp-uglify');
 var minifyCss = require('gulp-minify-css');
 var minifyHtml = require('gulp-minify-html');
 var sourcemaps = require('gulp-sourcemaps');
+var replace = require('gulp-replace');
 
 var dev = 'client/development';
 var prod = 'client/production';
@@ -71,6 +72,7 @@ gulp.task('js', function() {
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(concat('app.js'))
+      .pipe(replace('process.env.HOST', process.env.HOST))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(prod));
 });

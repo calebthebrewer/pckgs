@@ -1,6 +1,8 @@
 'use strict';
 
-var teams = require('./node-persist-factory')('teams');
+var _ = require('lodash');
+var teams = require('node-persist').create();
+teams.initSync(_.defaults({dir: 'teams'}));
 
 module.exports = function(app) {
 	app.get('/teams', function(req, res) {

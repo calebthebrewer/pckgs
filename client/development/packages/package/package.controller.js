@@ -29,7 +29,7 @@ angular.module('packages')
 
 			$scope.npmScript = function npmScript(script) {
 				var scriptSocket = socketFactory({
-					ioSocket: io.connect('http://localhost:4000')
+					ioSocket: io.connect('process.env.HOST')
 				});
 
 				var channel = pckg.path + ':' + script;
