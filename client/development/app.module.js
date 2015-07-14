@@ -10,5 +10,6 @@ angular.module('packages-ui', [
 	//our stuff
 	'packages',
 	'browser',
-	'scripts'
+	'scripts',
+	'player'
 ]);

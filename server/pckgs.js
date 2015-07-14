@@ -1,9 +1,6 @@
 'use strict';
 
-var _ = require('lodash');
-var pckgs = require('node-persist');
-
-pckgs.initSync(_.defaults({dir: 'pckgs'}));
+var pckgs = require('./node-persist-factory')('pckgs');
 
 module.exports = function(app) {
 	app.get('/pckgs', function(req, res) {

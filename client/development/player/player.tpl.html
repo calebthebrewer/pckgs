@@ -1,0 +1,29 @@
+<div class="player">
+	<form ng-submit="addTeam()" role="form" class="form-inline">
+		<div class="row">
+			<div class="input-group input-group-lg col-xs-10">
+				<input ng-model="newTeamName"
+					   type="text"
+					   class="form-control text-center"
+					   placeholder="new team name...">
+
+			</div>
+			<div class="input-group input-group-lg col-xs-2">
+				<button type="submit" class="btn btn-primary form-control">
+					<span class="glyphicon glyphicon-plus"></span>
+				</button>
+			</div>
+		</div>
+	</form>
+	<ul class="list-group" ng-class="{'col-sm-4': teamOpen}">
+		<input ng-if="teams > 5" class="form-control" ng-model="teamFilter" placeholder="filter...">
+		<a ng-repeat="team in teams | filter:teamFilter"
+		   ui-sref="player.team({team: team.name})"
+		   ui-sref-active="active"
+		   class="list-group-item">
+			{{team.name}}
+		</a>
+	</ul>
+	<ui-view ng-class="{'col-sm-8': teamOpen}"></ui-view>
+</div>
+
