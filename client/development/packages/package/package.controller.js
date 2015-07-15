@@ -2,13 +2,12 @@ angular.module('packages')
 	.controller('package', [
 		'$scope',
 		'scripts',
-		'socketFactory',
 		'pckgs',
 		'pckg',
 		'npm',
 		'bower',
 		'readme',
-		function($scope, scripts, socketFactory, pckgs, pckg, npm, bower, readme) {
+		function($scope, scripts, pckgs, pckg, npm, bower, readme) {
 			'use strict';
 
 			$scope.npm = npm;
@@ -19,22 +18,23 @@ angular.module('packages')
 			resetNewEnvironment();
 
 			// helpers
-			if (!npm.scripts.install) {
-				npm.scripts.install = 'npm install';
+			if (!pckg.scripts) {
+				pckg.scripts = {
+					install: 'npm install'
+				};
+			}
+			if (!pckg.environments) {
+				pckg.environments = {};
 			}
 
 			addPckgScriptsToScope();
 
-			$scope.environments = pckg.environments || {};
+			$scope.environments = pckg.environments;
 
 			$scope.npmScript = function npmScript(script) {
-				var scriptSocket = socketFactory({
-					ioSocket: io.connect('process.env.HOST')
-				});
-
 				var channel = pckg.path + ':' + script;
 
-				scriptSocket.emit('script', {
+				scripts.socket.emit('script', {
 					path: pckg.path,
 					command: npm.scripts[script],
 					channel: channel
@@ -42,7 +42,7 @@ angular.module('packages')
 
 				$scope.output[script] = [];
 
-				scriptSocket.on(channel, function(output) {
+				scripts.socket.on(channel, function(output) {
 					output.forEach(function(datum) {
 						if (datum) {
 							$scope.output[script].push(datum);
@@ -50,16 +50,12 @@ angular.module('packages')
 					});
 				});
 
-				scriptSocket.on('done', function(channel) {
-					scriptSocket.removeListener(channel);
+				scripts.socket.on('done', function(channel) {
+					scripts.socket.removeListener(channel);
 				});
 			};
 
 			$scope.addScript = function addScript() {
-				if (!pckg.scripts) {
-					pckg.scripts = {};
-				}
-
 				pckg.scripts[$scope.newScript.label] = $scope.newScript.command;
 				pckgs.post(pckg.path, pckg);
 
@@ -74,10 +70,6 @@ angular.module('packages')
 			}
 
 			$scope.addEnvironment = function addEnvironment() {
-				if (!pckg.environments) {
-					pckg.environments = {};
-				}
-
 				pckg.environments[$scope.newEnvironment.name] = $scope.newEnvironment.settings;
 				pckgs.post(pckg.path, pckg);
 

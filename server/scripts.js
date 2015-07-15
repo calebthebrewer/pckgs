@@ -3,6 +3,7 @@
 var spawn = require('win-spawn');
 
 var scripts = {};
+var children = {};
 
 module.exports = function(app, io) {
 	io.on('connection', function(socket) {
@@ -16,19 +17,27 @@ module.exports = function(app, io) {
 			socket.join(script.channel);
 			scripts[script.channel].push(socket);
 		});
+
+		socket.on('kill', function(channel) {
+			children[channel].kill();
+		});
 	});
 };
 
 function startScript(io, script) {
-	var env = {};
-	script.environment.forEach(function(setting) {
-		env[setting.key] = setting.value;
-	});
+	var spawnScript = {
+		cwd: script.path
+	};
 
-	var child = spawn(script.command, [], {
-		cwd: script.path,
-		env: env
-	});
+	if (script.environment) {
+		spawnScript.env = {};
+		script.environment.forEach(function(setting) {
+			spawnScript.env[setting.key] = setting.value;
+		});
+	}
+
+	var child = spawn(script.command, [], spawnScript);
+	children[script.channel] = child;
 
 	child.stdout.setEncoding('utf8');
 
@@ -52,5 +61,6 @@ function startScript(io, script) {
 			socket.leave(script.channel);
 		});
 		delete scripts[script.channel];
+		delete children[script.channel];
 	}
 }

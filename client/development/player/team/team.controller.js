@@ -1,28 +1,35 @@
 angular.module('team')
 .controller('team', [
 		'$scope',
+		'$state',
 		'teams',
 		'files',
-		'socketFactory',
+		'scripts',
 		'packages',
 		'team',
-		function($scope, teams, files, socketFactory, packages, team) {
+		function($scope, $state, teams, files, scripts, packages, team) {
 			'use strict';
-
-			var scriptSocket = socketFactory({
-				ioSocket: io.connect('process.env.HOST')
-			});
 
 			$scope.pckgs = _.pluck(packages, 'name');
 
 			setLines();
 			$scope.team = team;
 
+
+			$scope.removeTeam = function removeTeam() {
+				teams.remove(team.name);
+				$state.go('player', {}, {reload: true});
+			};
+
 			$scope.addPlayer = function addPlayer(line, newPlayerName) {
 				var player = _.find(packages, {name: newPlayerName});
 
 				if (!player) {
 					return;
+				}
+
+				if (!player.scripts) {
+					player.scripts = {};
 				}
 
 				files
@@ -47,19 +54,22 @@ angular.module('team')
 				saveTeam();
 			};
 
+			var channels = {};
+
+
 			$scope.play = function play(player) {
 				player.status = 'playing';
+				player.channel = player.path + ':' + player.script;
+				channels[player.channel] = player;
 
-				var channel = player.path + ':' + player.script;
-
-				scriptSocket.emit('script', {
+				scripts.socket.emit('script', {
 					path: player.path,
 					command: player.script,
 					environment: player.environment,
-					channel: channel
+					channel: player.channel
 				});
 
-				scriptSocket.on(channel, function(output) {
+				scripts.socket.on(player.channel, function(output) {
 					output.forEach(function(datum) {
 						if (datum) {
 							console.info(datum);
@@ -68,8 +78,15 @@ angular.module('team')
 				});
 			};
 
+			scripts.socket.on('done', function(channel) {
+				channels[channel].status = 'stopped';
+				delete channels[channel];
+			});
+
 			$scope.stop = function stop(player) {
 				player.status = 'stopped';
+
+				scripts.socket.emit('kill', player.channel);
 			};
 
 			$scope.addLine = function addLine() {

@@ -10,18 +10,22 @@ angular.module('player')
 
 			$scope.teamOpen = !$state.is('player');
 			$rootScope.$on('$locationChangeSuccess', function() {
-				$scope.packageOpen = !$state.is('packages');
+				$scope.teamOpen = !$state.is('player');
 			});
 
 			$scope.teams = teamPlayers;
 
 			$scope.addTeam = function addTeam() {
-				var teamName = $scope.newTeamName;
+				var team = {
+					name: $scope.newTeamName,
+					lines: [[]]
+				};
+
 				$scope.newTeamName = '';
 
-				teams.post(teamName, {name: teamName});
-				$scope.teams.push({name: teamName});
-				$state.go('player.team', {team: teamName});
+				teams.post(team.name, team);
+				$scope.teams.push(team);
+				$state.go('player.team', {team: team.name});
 			};
 		}
 	]);

@@ -1,13 +1,12 @@
 angular.module('scripts')
 	.service('scripts', [
-		'$http',
-		function ($http) {
+		'socketFactory',
+		function (socketFactory) {
 			'use strict';
 
-			this.run = function run(path, script) {
-				$http.post('/scripts', {
-					path: path,
-					script: script
-				});
-			};
+			var scriptSocket = socketFactory({
+				ioSocket: io.connect('process.env.HOST')
+			});
+
+			this.socket = scriptSocket;
 		}]);

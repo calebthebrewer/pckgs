@@ -1,9 +1,16 @@
-<h1>{{::team.name}}</h1>
+<h1>
+	{{::team.name}}
+	<button ng-click="removeTeam()"
+			role="button"
+			class="btn btn-danger">
+		<span class="glyphicon glyphicon-remove"></span>
+	</button>
+</h1>
 <ul class="team list-group">
 	<li ng-repeat="line in team.lines track by $index" class="line list-group-item">
 		<div ng-repeat="player in line track by $index" class="player panel panel-default">
 			<div class="panel-heading">
-				{{::player.name}}
+				<a ui-sref="packages.package({path: player.path})">{{::player.name}}</a>
 				<span ng-switch="player.status">
 					<button ng-switch-default
 							ng-click="play(player)"
